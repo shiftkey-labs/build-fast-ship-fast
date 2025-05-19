@@ -1,4 +1,4 @@
-'use server'
+'use server' // Make sure that this is a server action
 
 import { createClient } from '@/lib/supabase/server'
 
