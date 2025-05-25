@@ -11,11 +11,79 @@ A modern application built with Next.js 15, React 19, Supabase for authenticatio
 - Movie catalog management system
 
 ## Getting Started
+### Create Next.js app
+```bash
+pnpm dlx create-next-app@latest 
+# or
+npx create-next-app@latest
+```
+### Add UI Library and Auth
+```bash
+pnpm dlx shadcn@latest init
+# or
+npx shadcn@latest init
+```
+
+```bash
+pnpm dlx shadcn@latest add https://supabase.com/ui/r/password-based-auth-nextjs.json
+# or
+npm shadcn@latest add https://supabase.com/ui/r/password-based-auth-nextjs.json
+```
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js 20+
 - pnpm (preferred) or npm/yarn
+
+#### Sample Database Populate
+```sql
+DROP TABLE IF EXISTS movies;
+
+-- Create the movies table
+CREATE TABLE movies (
+    id SERIAL PRIMARY KEY, -- Auto-incrementing unique ID
+    title VARCHAR(255) NOT NULL, -- Movie title
+    director VARCHAR(255), -- Movie director
+    release_year INTEGER, -- Year of release
+    genre VARCHAR(100) -- Movie genre
+);
+
+-- Insert some movies
+INSERT INTO movies (title, director, release_year, genre) VALUES
+('Inception', 'Christopher Nolan', 2010, 'Action, Adventure, Sci-Fi'),
+('Parasite', 'Bong Joon Ho', 2019, 'Drama, Thriller'),
+('Dune', 'Denis Villeneuve', 2021, 'Action, Adventure, Drama'),
+('Spider-Man: Into the Spider-Verse', 'Bob Persichetti, Peter Ramsey, Rodney Rothman', 2018, 'Animation, Action, Adventure'),
+('Avengers: Endgame', 'Anthony and Joe Russo', 2019, 'Action, Adventure, Sci-Fi');
+```
+
+### Database RLS
+```sql
+-- Enable RLS on the movies table
+ALTER TABLE movies ENABLE ROW LEVEL SECURITY;
+
+-- Create policy to allow all authenticated users to select, insert, update, and delete movies
+CREATE POLICY "Users can view all movies" 
+ON movies FOR SELECT 
+TO authenticated
+USING (true);
+
+CREATE POLICY "Users can insert movies" 
+ON movies FOR INSERT 
+TO authenticated
+WITH CHECK (true);
+
+CREATE POLICY "Users can update movies" 
+ON movies FOR UPDATE 
+TO authenticated
+USING (true);
+
+CREATE POLICY "Users can delete movies" 
+ON movies FOR DELETE 
+TO authenticated
+USING (true);
+```
+
 
 ### Installation
 
