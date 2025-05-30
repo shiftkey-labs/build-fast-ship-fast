@@ -1,7 +1,7 @@
 ---
 description: 
 globs: 
-alwaysApply: true
+alwaysApply: false
 ---
 # Development Philosophy
 - Write clean, maintainable, and scalable code
